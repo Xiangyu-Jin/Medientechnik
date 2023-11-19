@@ -49,7 +49,7 @@ function Terme = teile( Dokument, Trennzeichen )
 end
 ```
 
-## 调用函数代码
+## calls the function
 ```matlab
 Trennzeichen = ['.',' ','/',',','"','+',':','-','<','>','!','?'];
 Dokument = 'The Test-sTRing, whiCh is the best for "tesTing" things';
