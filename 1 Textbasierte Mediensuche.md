@@ -200,4 +200,98 @@ fTerme =
 
 
 
+# d) Indizierung
+Erstellen Sie die Funktion indiziere, die einen erwiterten "inverted index" für alle N Dokumente erstellt. Der Index soll als ein "containers.Map" implementiert werden. Dabei soll für jedes normalisierte Wort ein Vektor der größe 1xN erstellt werden in dem jedes Element angibt wie oft das Normalisierte Wort im n Dokument vorkommt.
+Sie können hierfür die Funktionen, welche in den vorherigen Aufgaben entwickelt wurden verwenden. Sie funktionieren, auch wenn Sie diese vorher nicht selber lösen konnten.
+
+### Input:
+Dokumente - Cell-Array aus einzelnen Dokumenten (Strings)
+Trennzeichen - Vektor aus Char-Elementen (≜ String). Jedes Element entspricht einem Zeichen bei dem das Dokument geteilt werden soll
+WBuch - Wörterbuch als zweidimensionales Cell-Array
+stoppWort - Cell-Array, welches alle Stoppwörter enthält
+
+### Output:
+invertedIndex - ein containers.Map, welches für jedes indizierte Wort einen Zeilenvektor enthält, der angibt in welchen Dokument es wie oft vorkommt
+
+### Hinweis:
+verwenden Sie die vorherigen Funktionen mein_Filter, normalisieren und teile
+den invertierten Index können sie mit containers.Map(...)indizieren
+nützliche Funktionen: numel(), isKey()
+
+```matlab
+
+```
+
+## calls the function
+```matlab
+load('dokumente.mat');
+Trennzeichen = ['.',' ','/',',','"','+',':','-','<','>','!','?'];
+WBuch = {  'ist', 'sein';...
+         'war','sein'};
+stoppWort = {'sein', 'der', 'die', 'das', 'und'};
+
+invertedIndex = indiziere( Dokumente, Trennzeichen, WBuch, stoppWort );
+invertedIndex.keys
+```
+
+## output
+```matlab
+
+```
+
+
+
 # 
+
+
+```matlab
+
+```
+
+## calls the function
+```matlab
+
+```
+
+## output
+```matlab
+
+```
+
+
+
+# 
+
+
+```matlab
+
+```
+
+## calls the function
+```matlab
+
+```
+
+## output
+```matlab
+
+```
+
+
+
+# 
+
+
+```matlab
+
+```
+
+## calls the function
+```matlab
+
+```
+
+## output
+```matlab
+
+```
