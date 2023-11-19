@@ -16,7 +16,7 @@ Das Dokument kann sowohl mit als auch ohne Trennzeichen beginnen/enden
 nützliche Funktionen: strlength(), ismember()
 
 
-
+```matlab
 function Terme = teile( Dokument, Trennzeichen )
 %% Funktion, welche Dokument in seine einzelnen Terme aufteilt
 
@@ -47,3 +47,4 @@ function Terme = teile( Dokument, Trennzeichen )
     end
 
 end
+```
