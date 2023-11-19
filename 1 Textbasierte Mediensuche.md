@@ -116,4 +116,90 @@ function nTerme = normalisieren(Terme, WBuch)
 end
 ```
 
+## calls the function
+```matlab
+WBuch = {  'am', 'be';...
+          'is','be'; ...
+          'were','be';...
+          'testing','test';...
+          'best','good';...
+          'Things','thing'};
+                
+Terme = {'The','Test','sTRing','whiCh','is','the','best','for','tesTing','things'};
 
+nTerme = normalisieren(Terme, WBuch)
+```
+
+## output
+```matlab
+nTerme =
+
+  1×10 cell array
+
+    {'the'}    {'test'}    {'string'}    {'which'}    {'be'}    {'the'}    {'good'}    {'for'}    {'test'}    {'thing'}
+```
+
+
+
+# c) Filtern von Stopwörtern
+Erstellen Sie die Funktion mein_Filter, die aus einem Cell-Array alle Stoppwörter entfernt. Die Liste der zu entfernenden Stoppwörter wird hierbei als zweiter Parameter in Form eines weiteren Cell-Arrays übergeben.
+
+### Input:
+nTerme - Cell-Array der normalisierten Terme
+stoppWort - Cell-Array, welches alle Stoppwörter enthält
+
+### Output:
+fTerme - Cell-Array der gefilterten Terme
+
+### Hinweis:
+Die Stoppwörter sind bereits normalisiert
+nützliche Funktionen: strcmp(), strcmpi(), numel()
+
+
+```matlab
+function [ fTerme ] = mein_Filter( nTerme, stoppWort )
+%% Funktion, welche Stoppwörter rausfiltert
+
+    % Initialize the filtered cell array
+    fTerme = [];
+
+    % Iterate through the input normalized terms cell array遍历输入的规范化后的术语单元格数组
+    for i = 1:numel(nTerme)
+        new_term = nTerme{i};
+
+        % Check if the current term is a stop word检查当前术语是否为停用词
+        isStopWord = any(strcmpi(new_term, stoppWort));    % isStopWord =0/1 logicwert -
+                                                           % `strcmpi(new_term, stoppWort)`: 使用 `strcmpi` 函数比较 `new_term` `stoppWort` 中的每个元素是否相等，忽 
+                                                           %  略大小写。该函数返回一个逻辑数组，指示每个元素是否相等。
+                                                           % `any(...)`: `any` 函数用于检查逻辑数组中是否存在至少一个 `true` 值。如果在比较中有任何一个元素相等（即 
+                                                           % `true`），则 `any` 返回 `true`，否则返回 `false`。
+
+        % If it's not a stop word, add the term to the filtered cell array如果不是停用词，将术语添加到过滤后的单元格数组中
+        if ~isStopWord
+            fTerme = [fTerme, {new_term}];
+        end
+    end
+
+end
+```
+
+## calls the function
+```matlab
+stoppWort = {'be', 'to', 'in', 'the', 'and'};
+nTerme = {'the','test','string','which','be','the','good','for','test','thing'};
+
+fTerme = mein_Filter( nTerme, stoppWort )
+```
+
+## output
+```matlab
+fTerme =
+
+  1×7 cell array
+
+    {'test'}    {'string'}    {'which'}    {'good'}    {'for'}    {'test'}    {'thing'}
+```
+
+
+
+# 
