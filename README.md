@@ -1,2 +1,2 @@
-# Medientechnik
-TUM WS23 medientechnik matlab课程作业
+# Medientechnik WS23/24
+TUM WS23/24 Medientechnik matlab课程作业
