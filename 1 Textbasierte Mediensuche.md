@@ -48,3 +48,19 @@ function Terme = teile( Dokument, Trennzeichen )
 
 end
 ```
+
+## 调用函数代码
+```matlab
+Trennzeichen = ['.',' ','/',',','"','+',':','-','<','>','!','?'];
+Dokument = 'The Test-sTRing, whiCh is the best for "tesTing" things';
+Terme = teile( Dokument, Trennzeichen )
+```
+
+## output
+```matlab
+Terme =
+
+  1×10 cell array
+
+    {'The'}    {'Test'}    {'sTRing'}    {'whiCh'}    {'is'}    {'the'}    {'best'}    {'for'}    {'tesTing'}    {'things'}
+```
