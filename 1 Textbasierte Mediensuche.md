@@ -93,5 +93,27 @@ Nützliche Funktionen: lower(), strcomp(), strcompi(), numel(), size()
 function nTerme = normalisieren(Terme, WBuch)
 %% Funktion, welche Terme normalisiert
 
+    % Initialize the normalized cell array初始化规范化后的单元格数组
+    nTerme = [];
+
+    % Iterate through each term in the input cell array遍历输入单元格数组中的每个术语
+    for i = 1:numel(Terme)
+        new_term = lower(Terme{i});  % Convert the current term to lowercase将当前术语转换为小写
+
+        % Suche im Wörterbuch nach dem aktuellen Term在词典中查找当前术语
+        index = find(strcmpi(new_term, WBuch(:, 1)));
+
+        % If the term is found in the dictionary, replace it with the corresponding base form如果在词典中找到术语，则用对应的基本形式替换
+        if ~isempty(index)
+            normalizedTerm = lower(WBuch{index, 2});
+            nTerme = [nTerme, {normalizedTerm}];
+        else
+            % If the term is not found in the dictionary, keep it as is如果在词典中未找到术语，则保留原样
+            nTerme = [nTerme, {new_term}];
+        end
+    end
+    
 end
 ```
+
+
