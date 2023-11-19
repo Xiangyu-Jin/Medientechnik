@@ -154,7 +154,9 @@ fTerme - Cell-Array der gefilterten Terme
 ### Hinweis:
 Die Stoppwörter sind bereits normalisiert
 nützliche Funktionen: strcmp(), strcmpi(), numel()
-
+这里是这些 MATLAB 函数的简要说明：
+1.`strcmpi(new_term, stoppWort)`: 使用 `strcmpi` 函数比较 `new_term` 与 `stoppWort` 中的每个元素是否相等，忽略大小写。该函数返回一个逻辑数组，指示每个元素是否相等。
+2.`any(...)`: `any` 函数用于检查逻辑数组中是否存在至少一个 `true` 值。如果在比较中有任何一个元素相等（即 `true`），则 `any` 返回 `true`，否则返回 `false`。
 
 ```matlab
 function [ fTerme ] = mein_Filter( nTerme, stoppWort )
@@ -169,10 +171,6 @@ function [ fTerme ] = mein_Filter( nTerme, stoppWort )
 
         % Check if the current term is a stop word检查当前术语是否为停用词
         isStopWord = any(strcmpi(new_term, stoppWort));    % isStopWord =0/1 logicwert -
-                                                           % `strcmpi(new_term, stoppWort)`: 使用 `strcmpi` 函数比较 `new_term` `stoppWort` 中的每个元素是否相等，忽 
-                                                           %  略大小写。该函数返回一个逻辑数组，指示每个元素是否相等。
-                                                           % `any(...)`: `any` 函数用于检查逻辑数组中是否存在至少一个 `true` 值。如果在比较中有任何一个元素相等（即 
-                                                           % `true`），则 `any` 返回 `true`，否则返回 `false`。
 
         % If it's not a stop word, add the term to the filtered cell array如果不是停用词，将术语添加到过滤后的单元格数组中
         if ~isStopWord
