@@ -1,6 +1,6 @@
 # a) Teilen von Texten
 
-## Erstellen Sie eine Funktion teile, die ein String als Eingabe erwartet, diesen in seine einzelnen Terme aufteilt und in einem Cell-Array zurückgibt. Die zum Trennen verwendeten Zeichen werden als Parameter Trennzeichen an die Funktion übergeben.
+Erstellen Sie eine Funktion teile, die ein String als Eingabe erwartet, diesen in seine einzelnen Terme aufteilt und in einem Cell-Array zurückgibt. Die zum Trennen verwendeten Zeichen werden als Parameter Trennzeichen an die Funktion übergeben.
 
 ### Input:
 Dokument - String, der einen Text enthält
