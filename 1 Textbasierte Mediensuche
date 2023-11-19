@@ -16,32 +16,32 @@ Das Dokument kann sowohl mit als auch ohne Trennzeichen beginnen/enden
 nützliche Funktionen: strlength(), ismember()
 
 
-  
+
 function Terme = teile( Dokument, Trennzeichen )
 %% Funktion, welche Dokument in seine einzelnen Terme aufteilt
 
-    % 初始化变量
-    Terme = {};
-    akt_term = '';
+    % Initialize variables初始化变量
+    Terme = {};        % empty array
+    akt_term = '';     % empty string
     
-    % 逐字符遍历文档字符串
+    % Iterate through the characters of the document string逐字符遍历文档字符串
     for i = 1:strlength(Dokument)
         akt_Char = Dokument(i);
         
-        % 检查当前字符是否为分隔符
+        % Check if the current character is a delimiter检查当前字符是否为分隔符
         if ismember(akt_Char, Trennzeichen)
-            % 将当前项添加到单元格数组中
+            % Add the current term to the cell array将当前项添加到单元格数组中
             if ~isempty(akt_term)
                 Terme = [Terme, {akt_term}];
                 akt_term = '';
             end
         else
-            % 将字符添加到当前项中
+            % Add the character to the current term将字符添加到当前项中
             akt_term = [akt_term, akt_Char];
         end
     end
     
-    % 如果存在最后一个项，则添加到单元格数组中
+    % If there is a last term, add it to the cell array如果存在最后一个项，则添加到单元格数组中
     if ~isempty(akt_term)
         Terme = [Terme, {akt_term}];
     end
