@@ -1,0 +1,49 @@
+# a) Teilen von Texten
+
+## Erstellen Sie eine Funktion teile, die ein String als Eingabe erwartet, diesen in seine einzelnen Terme aufteilt und in einem Cell-Array zurückgibt. Die zum Trennen verwendeten Zeichen werden als Parameter Trennzeichen an die Funktion übergeben.
+
+### Input:
+Dokument - String, der einen Text enthält
+Trennzeichen - Vektor aus Char-Elementen (≜ String). Jedes Element entspricht einem Zeichen bei dem das Dokument geteilt werden soll
+
+### Output:
+Terme - Cell-Array der einzelnen Wörter
+
+### Hinweise:
+Die Verwendung der Matlab-Funktionen split(), strsplit(), etc. ist nicht erlaubt
+Trennzeichen können auch mehrfach hintereinander im Dokument vorkommen
+Das Dokument kann sowohl mit als auch ohne Trennzeichen beginnen/enden
+nützliche Funktionen: strlength(), ismember()
+
+
+  
+function Terme = teile( Dokument, Trennzeichen )
+%% Funktion, welche Dokument in seine einzelnen Terme aufteilt
+
+    % 初始化变量
+    Terme = {};
+    akt_term = '';
+    
+    % 逐字符遍历文档字符串
+    for i = 1:strlength(Dokument)
+        akt_Char = Dokument(i);
+        
+        % 检查当前字符是否为分隔符
+        if ismember(akt_Char, Trennzeichen)
+            % 将当前项添加到单元格数组中
+            if ~isempty(akt_term)
+                Terme = [Terme, {akt_term}];
+                akt_term = '';
+            end
+        else
+            % 将字符添加到当前项中
+            akt_term = [akt_term, akt_Char];
+        end
+    end
+    
+    % 如果存在最后一个项，则添加到单元格数组中
+    if ~isempty(akt_term)
+        Terme = [Terme, {akt_term}];
+    end
+
+end
