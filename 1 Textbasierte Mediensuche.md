@@ -219,6 +219,50 @@ den invertierten Index können sie mit containers.Map(...)indizieren
 nützliche Funktionen: numel(), isKey()
 
 ```matlab
+function [invertedIndex] = indiziere(Dokumente, Trennzeichen, WBuch, stoppWort)
+%% indiziere - 创建文档集合的倒排索引
+%% Funktion, welche für eine Dokumentensammlung einen Inverted Index erstellt
+
+    % 初始化倒排索引为一个 containers.Map 对象
+    % Initialize the inverted index as a containers.Map
+    invertedIndex = containers.Map;
+
+    % 遍历输入的文档单元格数组中的每个文档
+    % Iterate through each document in the input cell array
+    for docIndex = 1:numel(Dokumente)
+        document = Dokumente{docIndex};
+
+        % 将文档拆分为词语
+        % Split the document into terms
+        terme = teile(document, Trennzeichen);
+
+        % 对词语进行标准化并过滤停用词，参考任务 b) 和 c)
+        % Normalize and filter stop words from the terms. Aufgabe b) & c)
+        normalizedTerme = normalisieren(terme, WBuch);
+        filteredTerme = mein_Filter(normalizedTerme, stoppWort);
+
+        % 遍历每个过滤后的词语并更新倒排索引
+        % Iterate through each filtered term and update the inverted index
+        for termIndex = 1:numel(filteredTerme)
+            new_term = filteredTerme{termIndex};
+
+            % 如果词语已经在倒排索引中，更新向量
+            % If the term is already in the inverted index, update the vector
+            if invertedIndex.isKey(new_term)  % true/false
+                new_vector = invertedIndex(new_term);
+                new_vector(docIndex) = new_vector(docIndex) + 1;
+                invertedIndex(new_term) = new_vector;
+            else
+                % 如果词语不在倒排索引中，添加新条目
+                % If the term is not in the inverted index, add it
+                new_vector = zeros(1, numel(Dokumente));
+                new_vector(docIndex) = 1;
+                invertedIndex(new_term) = new_vector;
+            end
+        end
+    end
+    
+end
 
 ```
 
@@ -236,12 +280,81 @@ invertedIndex.keys
 
 ## output
 ```matlab
+ans =
+
+  1×35 cell array
+
+  Columns 1 through 14
+
+    {'also'}    {'another'}    {'auch'}    {'auf'}    {'be'}    {'beispiel'}    {'can'}    {'dieser'}    {'documents'}    {'ein'}    {'eine'}    {'exzellenzunivers…'}    {'hier'}    {'ihre'}
+
+  Columns 15 through 28
+
+    {'im'}    {'in'}    {'kein'}    {'konnte'}    {'language'}    {'lmt'}    {'praktikum'}    {'rwth'}    {'satz'}    {'schaukel'}    {'schwarz'}    {'schwinguin'}    {'sitzt'}    {'stehen'}
+
+  Columns 29 through 35
+
+    {'the'}    {'tum'}    {'was'}    {'weiss'}    {'werbung'}    {'willkommen'}    {'written'}
+```
+
+
+
+# e) Boolesche Suche
+Erstellen Sie die Funktion boolescheSuche, welche für eine gegebene Suchanfrage Dokumente findet, welche die Suche erfüllen. Die Suchanfrage besteht aus einem Cell-Array, welches wiederum zwei Cell-Arrays beinhaltet. Das erste Array enthält Wörter, die im Dokument vorkommen sollen, und das Zweite Wörter, die im Dokument nicht vorkommen sollen (siehe "Code to call your function").
+Erstellen Sie hierzu als erstes eine Indzidenzmatrix m, welche angibt in welchen Dokumenten welche Wörter vorkommen. 
+Anschließend wenden sie die richtigen booleschen Operatoren auf dei Matrix an.
+
+### Input:
+suche - Cell-Array bestehend aus zwei Cell-Arrays, welche Terme enthalten, die (nicht) vorkommen sollen
+invertedIndex - ein containers.Map, welches für jedes indizierte Wort einen Vektor enthält, der angibt in welchen Dokument es vorkommt
+
+### Output:
+m - Inzidenzmatrix als boolesche Matrix der größe |Terme| x |Dokumente|
+dokumenteIds - Vektor mit allen Dokumente IDs, die die Suche erfüllen
+
+### Hinweis:
+Die boolesche Suche ist im Skript ab Seite 6 beschrieben
+Sie können wieder die zuvor implementierten Funktionen benutzen
+gehen Sie davon aus, dass die Suche bereits normiert ist und keine Stoppwörter enthält
+Die Indzidenzmatrix kann sehr einfach aus dem inverted index erstellt werden
+nützliche Funktionen: logical(), contains(), find()
+
+```matlab
+function [ dokumenteIds, m ] = boolescheSuche( suche, invertedIndex )
+%% Funktion, welche eine boolesche Suche ausführt
+
+end
+```
+
+## calls the function
+```matlab
+load('dokumente.mat');
+trennzeichen = ['.',' ','/',',','"','+',':','-','<','>','!','?'];
+dict = {  'ist', 'sein';...
+         'war','sein'};
+stoppWort = {'sein', 'der', 'die', 'das', 'und'};
+
+invertedIndex = indiziere( Dokumente, trennzeichen, dict, stoppWort );
+
+suche = {{'beispiel'},{}};
+[ dokumenteIds, m ] = boolescheSuche(suche, invertedIndex);
+dokumenteIds
+```
+
+## output
+```matlab
 
 ```
 
 
 
-# 
+# f) Freitextsuche
+
+### Input:
+
+### Output:
+
+### Hinweis:
 
 
 ```matlab
@@ -260,38 +373,4 @@ invertedIndex.keys
 
 
 
-# 
 
-
-```matlab
-
-```
-
-## calls the function
-```matlab
-
-```
-
-## output
-```matlab
-
-```
-
-
-
-# 
-
-
-```matlab
-
-```
-
-## calls the function
-```matlab
-
-```
-
-## output
-```matlab
-
-```
