@@ -323,6 +323,45 @@ nützliche Funktionen: logical(), contains(), find()
 function [ dokumenteIds, m ] = boolescheSuche( suche, invertedIndex )
 %% Funktion, welche eine boolesche Suche ausführt
 
+% Holen eindeutige Begriffe aus dem invertedIndex
+terms = keys(invertedIndex);
+
+% Initialisieren die Inzidenzmatrix mit Nullen
+m = zeros(length(terms), numel(invertedIndex(terms{1})));
+satisfies = ones(1, numel(invertedIndex(terms{1})));
+
+% Füllen die Inzidenzmatrix basierend auf dem invertedIndex
+for termIndex = 1:numel(terms)
+    term = terms{termIndex};
+    m(termIndex, :) = invertedIndex(term);
+end
+
+% umwandeln in logischen Typ 
+m = logical(m);
+
+% Extrahieren die zu "soll" und "nicht" Begriffe
+suche_soll = suche{1};
+suche_nicht = suche{2};
+
+% Wenden boolesche Operatoren auf die Inzidenzmatrix an:
+% soll
+for i = 1:numel(suche_soll)
+    term_soll = suche_soll{i};
+    if isKey(invertedIndex, term_soll)
+        term_vector_soll = m(contains(terms, term_soll), :);
+        satisfies = satisfies & term_vector_soll;
+    end
+end
+
+% nicht
+for j = 1:numel(suche_nicht)
+    term_nicht = suche_nicht{j};
+    if isKey(invertedIndex, term_nicht)
+        term_vector_nicht = m(contains(terms, term_nicht), :);
+        satisfies = satisfies & ~term_vector_nicht;
+    end
+end
+
 end
 ```
 
@@ -343,32 +382,151 @@ dokumenteIds
 
 ## output
 ```matlab
+dokumenteIds =
 
+     2
 ```
 
 
 
 # f) Freitextsuche
-
+Erstellen Sie die Funktion freitextSuche, welche für einen beliebig langen Suchtext die Dokumente sortieret nach ihrer Ähnlichkeit zurückgibt. Verwenden Sie hierfür die Summe der tf-idf Werte.
 ### Input:
-
+sucheText - beliebiger String
+invertedIndex - ein containers.Map, welches für jedes indizierte Wort einen Vektor enthält, der angibt in welchen Dokument es wie oft vorkommt
+Trennzeichen - Vektor aus Char-Elementen (≜ String). Jedes Element entspricht einem Zeichen bei dem das Dokument geteilt werden soll
+WBuch - Wörterbuch als zweidimensionales Cell-Array
+stoppWort - Cell-Array, welches alle Stoppwörter enthält
 ### Output:
-
+Rang - Vektor, welcher die Ähnlichkeitswerte absteigend sortiert enthält (Höchste tf-idf Summe ≜ erstes Element)
+dokumenteIds - Vektor mit allen Dokumente IDs, geordnet nach dem Rang
 ### Hinweis:
-
+Die Freitextsuche ist im Skript ab Seite 7 beschrieben
+Sie können wieder die zuvor implementierten Funktionen benutzen
+dieses mal muss die Suchanfrage noch geteilt, normiert und gefiltert werden
+bitte verwenden Sie den Logarithmus zur Basis 10 zur Berechnung der idf 
+nützliche Funktionen: logical(), contains(), find()
+die Matlab-Funktion tfidf() darf nicht verwendet werden
 
 ```matlab
+function [ dokumenteIds, Rang ] = freitextSuche( suchText, invertedIndex, Trennzeichen, WBuch, stoppWort )
+%% Funktion, welche eine Freitextsuche ausführt
 
+    % Split
+    Terme = teile(suchText, Trennzeichen);
+    
+    % Normalize
+    norm_Terme = normalisieren(Terme, WBuch);
+    
+    % Filter out stop words and remove duplicates
+    gefil_Terme = mein_Filter(norm_Terme, stoppWort);
+    
+    % Initialization
+    terms = keys(invertedIndex);
+    N = numel(invertedIndex(terms{1}));
+    dokumenteIds = 1:N;
+
+    % tf-idf
+    Rang = zeros(1, N);
+    df = zeros(numel(gefil_Terme), 1);
+    
+    for termIndex = 1:numel(gefil_Terme)
+        if isKey(invertedIndex, gefil_Terme{termIndex})            
+            tf = invertedIndex(gefil_Terme{termIndex});
+            
+            nonZeros = zeros(size(tf));
+            nonZeros(tf ~= 0) = 1;
+            
+            zwi_df = sum(nonZeros);
+            %zwi_df = nnz(tf);
+            
+            idf = log10(N / zwi_df);
+            tf_idf = tf * idf;
+            Rang = Rang + tf_idf;
+            df(1:termIndex) = zwi_df;
+        end
+    end
+    
+    % Sort the results in descending order
+    [Rang, Indizen] = sort(Rang, 'descend');
+    dokumenteIds = dokumenteIds(Indizen);
+    
+end
 ```
 
 ## calls the function
 ```matlab
+load('dokumente.mat');
+Trennzeichen = ['.',' ','/',',','"','+',':','-','<','>','!','?'];
+WBuch = {  'ist', 'sein';...
+         'war','sein'};
+stoppWort = {'sein', 'der', 'die', 'das', 'und'};
 
+invertedIndex = indiziere( Dokumente, Trennzeichen, WBuch, stoppWort );
+suchText = 'Willkommen an der Exzellenzuniversitat TUM';
+[ dokumenteIds, Rang ] = freitextSuche( suchText, invertedIndex, Trennzeichen, WBuch, stoppWort )
 ```
 
 ## output
 ```matlab
 
+Medientechnik WS23/24  1 Textbasierte Mediensuche 
+
+ f) Freitextsuche
+已提交 7 个答案 (最大数量：无限) | 查看我的答案
+Die Freitextsuche ist im Skript ab Seite 7 beschrieben
+Sie können wieder die zuvor implementierten Funktionen benutzen
+dieses mal muss die Suchanfrage noch geteilt, normiert und gefiltert werden
+bitte verwenden Sie den Logarithmus zur Basis 10 zur Berechnung der idf 
+nützliche Funktionen: logical(), contains(), find()
+die Matlab-Funktion tfidf() darf nicht verwendet werden
+函数
+更多信息
+ 
+您答案的代码已保存。 
+ 
+ MATLAB 文档Opens in new tab
+ 
+function [ dokumenteIds, Rang ] = freitextSuche( suchText, invertedIndex, Trennzeichen, WBuch, stoppWort )
+%% Funktion, welche eine Freitextsuche ausführt
+
+    % Split
+    Terme = teile(suchText, Trennzeichen);
+    
+    % Normalize
+    norm_Terme = normalisieren(Terme, WBuch);
+    
+    % Filter out stop words and remove duplicates
+…            Rang = Rang + tf_idf;
+            df(1:termIndex) = zwi_df;
+        end
+    end
+    
+    % Sort the results in descending order
+    [Rang, Indizen] = sort(Rang, 'descend');
+    dokumenteIds = dokumenteIds(Indizen);
+    
+end
+调用函数的代码更多信息
+load('dokumente.mat');
+Trennzeichen = ['.',' ','/',',','"','+',':','-','<','>','!','?'];
+WBuch = {  'ist', 'sein';...
+         'war','sein'};
+stoppWort = {'sein', 'der', 'die', 'das', 'und'};
+
+invertedIndex = indiziere( Dokumente, Trennzeichen, WBuch, stoppWort );
+suchText = 'Willkommen an der Exzellenzuniversitat TUM';
+[ dokumenteIds, Rang ] = freitextSuche( suchText, invertedIndex, Trennzeichen, WBuch, stoppWort )
+ 更多信息
+输出
+dokumenteIds =
+
+     6     1     2     3     4     5
+
+
+Rang =
+
+    1.5563    0.7782         0         0         0         0
 ```
 
 
