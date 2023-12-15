@@ -470,55 +470,6 @@ suchText = 'Willkommen an der Exzellenzuniversitat TUM';
 ## output
 ```matlab
 
-Medientechnik WS23/24  1 Textbasierte Mediensuche 
-
- f) Freitextsuche
-已提交 7 个答案 (最大数量：无限) | 查看我的答案
-Die Freitextsuche ist im Skript ab Seite 7 beschrieben
-Sie können wieder die zuvor implementierten Funktionen benutzen
-dieses mal muss die Suchanfrage noch geteilt, normiert und gefiltert werden
-bitte verwenden Sie den Logarithmus zur Basis 10 zur Berechnung der idf 
-nützliche Funktionen: logical(), contains(), find()
-die Matlab-Funktion tfidf() darf nicht verwendet werden
-函数
-更多信息
- 
-您答案的代码已保存。 
- 
- MATLAB 文档Opens in new tab
- 
-function [ dokumenteIds, Rang ] = freitextSuche( suchText, invertedIndex, Trennzeichen, WBuch, stoppWort )
-%% Funktion, welche eine Freitextsuche ausführt
-
-    % Split
-    Terme = teile(suchText, Trennzeichen);
-    
-    % Normalize
-    norm_Terme = normalisieren(Terme, WBuch);
-    
-    % Filter out stop words and remove duplicates
-…            Rang = Rang + tf_idf;
-            df(1:termIndex) = zwi_df;
-        end
-    end
-    
-    % Sort the results in descending order
-    [Rang, Indizen] = sort(Rang, 'descend');
-    dokumenteIds = dokumenteIds(Indizen);
-    
-end
-调用函数的代码更多信息
-load('dokumente.mat');
-Trennzeichen = ['.',' ','/',',','"','+',':','-','<','>','!','?'];
-WBuch = {  'ist', 'sein';...
-         'war','sein'};
-stoppWort = {'sein', 'der', 'die', 'das', 'und'};
-
-invertedIndex = indiziere( Dokumente, Trennzeichen, WBuch, stoppWort );
-suchText = 'Willkommen an der Exzellenzuniversitat TUM';
-[ dokumenteIds, Rang ] = freitextSuche( suchText, invertedIndex, Trennzeichen, WBuch, stoppWort )
- 更多信息
-输出
 dokumenteIds =
 
      6     1     2     3     4     5
